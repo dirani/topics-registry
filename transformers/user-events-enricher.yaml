@@ -1,0 +1,16 @@
+{{- if eq .Values.scope "global" }}
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: user-events-enricher
+  labels:
+    strimzi.io/cluster: {{ .Values.connectCluster }}
+spec:
+  class: org.apache.kafka.connect.transforms.InsertField$Value
+  tasksMax: 1
+  config:
+    topics: user-events
+    addTimestamp: true
+    static.field: source
+    static.value: registry-transformer
+{{- end }}
